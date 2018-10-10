@@ -68,10 +68,12 @@ module.exports = class UserService {
    * @returns {Query} returns array of populated cart items
    */
   async getCartItems(userId) {
-    const user = await this.User.findOne({ _id: userId })
+    const data = await this.User.findOne({ _id: userId })
       .populate('cart.product')
       .exec()
       .then(userData => userData);
+
+    return data;
   }
 
   /**
@@ -85,7 +87,7 @@ module.exports = class UserService {
   async addItemToCart(itemId, userId) {
     const added = await this.User.update(
       { _id: userId },
-      { $push: { cart: {product: itemId, count: 1} } }
+      { $push: { cart: { product: itemId, count: 1 } } }
     );
     if (added.ok !== 1)
       return createError(500, 'something went wrong in userService');
