@@ -8,7 +8,7 @@ To Start App
 
 3- Add products to db by running: node seed/productSeeder
 
-4- run: npm start in terminal
+4- run: npm start
 
 5- to register new user and recieve a token make a post request to http://localhost:3000/users/register with a json body that contains three properties: { "name": "tarek", "email": "tarek@gmail.com", "password": "12345"}. a token will be sent in header property 'x-auth-token'.
 
