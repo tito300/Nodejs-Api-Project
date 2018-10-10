@@ -68,8 +68,10 @@ module.exports = class UserService {
    * @returns {Query} returns array of populated cart items
    */
   async getCartItems(userId) {
-    const user = await this.User.findOne({ _id: userId }).populate('cart');
-    return user.cart;
+    const user = await this.User.findOne({ _id: userId })
+      .populate('cart.product')
+      .exec()
+      .then(userData => userData);
   }
 
   /**

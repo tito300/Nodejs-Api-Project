@@ -16,7 +16,12 @@ const usersSchema = new mongoose.Schema({
   registerDate: { type: Date, default: Date.now() },
   purchasesCount: { type: Number, default: 0 },
   amoutSpent: { type: Number, default: 0 },
-  cart: [{ type: mongoose.Schema.Types.ObjectId, ref: 'product' }],
+  cart: [
+    {
+      product: { type: mongoose.Schema.Types.ObjectId, ref: 'product' },
+      count: Number,
+    },
+  ],
   totalItems: { type: Number, default: 0 },
   totalPrice: { type: Number },
 });
