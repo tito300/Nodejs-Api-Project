@@ -1,0 +1,5 @@
+{
+    "PORT": "3001",
+    "db": "mongodb://localhost/nodejsProjectTest",
+    "secret": "tototo"
+}
