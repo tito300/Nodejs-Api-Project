@@ -3,7 +3,12 @@ const mongoose = require('mongoose');
 const productSchema = new mongoose.Schema({
   name: { type: String, required: true, index: true },
   disc: { type: String, required: true },
-  category: { type: String, required: true, default: 'general', index: true },
+  category: {
+    type: String,
+    required: true,
+    default: 'general',
+    index: true,
+  },
   available: {
     type: Boolean,
     required: true,
