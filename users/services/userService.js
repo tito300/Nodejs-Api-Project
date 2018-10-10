@@ -85,7 +85,7 @@ module.exports = class UserService {
   async addItemToCart(itemId, userId) {
     const added = await this.User.update(
       { _id: userId },
-      { $push: { cart: itemId } }
+      { $push: { cart: {product: itemId, count: 1} } }
     );
     if (added.ok !== 1)
       return createError(500, 'something went wrong in userService');
