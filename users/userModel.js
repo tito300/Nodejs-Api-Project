@@ -11,6 +11,7 @@ const cartSchema = new mongoose.Schema({
   },
   price: { type: Number, required: true },
   link: { type: String },
+  count: { type: Number, default: 1 },
 });
 const usersSchema = new mongoose.Schema({
   name: { type: String, required: true, minlength: 3, maxlength: 20 },
