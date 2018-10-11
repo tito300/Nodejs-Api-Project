@@ -9,7 +9,10 @@ const { app } = require('../../app');
 describe('Product router tests', () => {
   beforeAll(() => {
     if (process.env.NODE_ENV !== 'test') return new Error('wrong environment');
-    return mongoose.connect('mongodb://localhost/test2345');
+    return mongoose.connect(
+      'mongodb://localhost/test2345',
+      { useCreateIndex: true }
+    );
   });
   beforeEach(() => {
     server = app.listen(3003);
@@ -19,7 +22,7 @@ describe('Product router tests', () => {
   });
 
   describe('main page route ./', () => {
-    afterEach(() => Product.remove());
+    afterEach(() => Product.deleteMany());
     it('should return 404 on invalid route', () =>
       request(server)
         .get('/random')
@@ -44,8 +47,6 @@ describe('Product router tests', () => {
     it('should return price and availability', async () => {
       await addData(1);
       const result = await request(server).get('/products/bonner');
-      //   debugger;
-      console.log('body is: ', result.body);
       return expect(result.text).toMatch(/18.34.*\s.*false|false.*\s.*18.34/);
     });
     it('should return 200 on /all', async () => {

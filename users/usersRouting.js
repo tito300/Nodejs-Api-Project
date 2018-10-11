@@ -1,8 +1,8 @@
 const express = require('express');
 const createError = require('http-errors');
 const jwt = require('jsonwebtoken');
-const { userService } = require('./services/index');
 const auth = require('./userAuthMiddleware');
+const { userService } = require('./services/index');
 
 const router = express.Router();
 
@@ -32,18 +32,18 @@ router.get('/cart', async (req, res, next) => {
 
   if (cartItems instanceof Error) return next(token);
 
-  if (cartItems.length === 0) return res.send('cart is empty');
+  if (cartItems.length === 0) return res.status(200).send('cart is empty');
 
-  res.send(`items in car: ${cartItems}`);
+  res.send(`items in cart: ${cartItems.cart}`);
 });
 
 // adds item to cart
 router.post('/cart/:id', async (req, res, next) => {
-  const itemId = req.params.id;
+  const body = req.body;
   const userId = getPayload(req).id;
-  const added = await userService.addItemToCart(itemId, userId);
+  const updated = await userService.addItemToCart(body, userId);
 
-  if (added instanceof Error) return next(added);
+  if (updated instanceof Error) return next(updated);
 
   res.send('item was added to cart successfully..');
 });

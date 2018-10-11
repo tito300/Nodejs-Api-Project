@@ -8,7 +8,10 @@ const { app } = require('../../app');
 describe('Users routes ./users/..', () => {
   beforeAll(() => {
     if (process.env.NODE_ENV !== 'test') throw new Error('wrong environment');
-    return mongoose.connect('mongodb://localhost/test2345');
+    return mongoose.connect(
+      'mongodb://localhost/test2345',
+      { useCreateIndex: true }
+    );
   });
 
   afterAll(() => mongoose.disconnect());
