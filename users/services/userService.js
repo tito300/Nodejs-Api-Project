@@ -62,31 +62,31 @@ module.exports = class UserService {
   }
 
   /**
+   * adds a reference (objectId) to the cart array property
+   * in user model
+   *
+   * @param {Body} Body takes http req body
+   * @param {Number|String} userId takes user id
+   * @returns {Boolean} returns true if item is added successfully
+   */
+  async addItemToCart(body, userId) {
+    const updated = await this.User.update(
+      { _id: userId },
+      { $push: { cart: body } }
+    );
+    if (updated.ok !== 1)
+      return createError(500, 'something went wrong in userService');
+    return true;
+  }
+
+  /**
    * populates and gets items from cart array
    *
    * @param {Number|String} userId takes user id
    * @returns {Query} returns array of populated cart items
    */
   async getCartItems(userId) {
-    const user = await this.User.findOne({ _id: userId }).populate('cart');
-    return user.cart;
-  }
-
-  /**
-   * adds a reference (objectId) to the cart array property
-   * in user model
-   *
-   * @param {String} itemId id of the product to add
-   * @param {Number|String} userId takes user id
-   * @returns {Boolean} returns true if item is added successfully
-   */
-  async addItemToCart(itemId, userId) {
-    const added = await this.User.update(
-      { _id: userId },
-      { $push: { cart: itemId } }
-    );
-    if (added.ok !== 1)
-      return createError(500, 'something went wrong in userService');
-    return true;
+    const cart = await this.User.findOne({ _id: userId });
+    return cart;
   }
 };
