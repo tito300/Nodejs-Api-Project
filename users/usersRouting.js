@@ -2,6 +2,7 @@ const express = require('express');
 const createError = require('http-errors');
 const jwt = require('jsonwebtoken');
 const auth = require('./userAuthMiddleware');
+const { userService } = require('./services/index');
 
 const router = express.Router();
 
