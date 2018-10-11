@@ -25,6 +25,10 @@ const usersSchema = new mongoose.Schema({
   totalPrice: { type: Number },
 });
 
+/**
+ * creates a json token
+ * @returns {String} web token
+ */
 usersSchema.methods.createJwt = async function() {
   const token = await jwt.sign(
     {
