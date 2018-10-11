@@ -32,9 +32,9 @@ router.get('/cart', async (req, res, next) => {
 
   if (cartItems instanceof Error) return next(token);
 
-  if (cartItems.length === 0) return res.send('cart is empty');
+  // if (cartItems.length === 0) return res.send('cart is empty');
 
-  res.send(`items in car: ${cartItems}`);
+  res.send(`items in car: ${JSON.stringify(cartItems)}`);
 });
 
 // adds item to cart

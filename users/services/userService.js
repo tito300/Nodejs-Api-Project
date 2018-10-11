@@ -68,12 +68,11 @@ module.exports = class UserService {
    * @returns {Query} returns array of populated cart items
    */
   async getCartItems(userId) {
-    this.User.findOne({ _id: userId })
-      .populate('cart.product')
-      .exec()
-      .then(userData => userData);
+    const result = await this.User.findOne({ _id: userId })
+      .populate('cart.productId')
+      .lean(); // returns array instead of mongoosemObject
 
-    return data;
+    return result;
   }
 
   /**
