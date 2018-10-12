@@ -10,6 +10,7 @@ const { productsService } = require('./services/index');
 
 const router = express.Router();
 
+// gets product by name or all
 router.get('/:name', async (req, res, next) => {
   const name = req.params.name;
   if (name === 'all') {
@@ -28,7 +29,7 @@ router.get('/:name', async (req, res, next) => {
     instock: ${product._doc.available}`); // <--- needs output - adjust test
 });
 
-// route for getting products by category name
+// gets products by category
 router.get('/category/:name', async (req, res, next) => {
   const category = req.params.name;
 

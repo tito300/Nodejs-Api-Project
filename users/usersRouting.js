@@ -1,7 +1,7 @@
 const express = require('express');
 const createError = require('http-errors');
 const jwt = require('jsonwebtoken');
-const auth = require('./userAuthMiddleware');
+const auth = require('../middlewares/userAuthMiddleware');
 const { userService } = require('./services/index');
 
 const router = express.Router();
@@ -26,8 +26,8 @@ router.post('/login', async (req, res, next) => {
 
 //  list cart items
 //  read notes 15 to view previous problem
-router.get('/cart', async (req, res, next) => {
-  const userId = getPayload(req).id;
+router.get('/cart', auth, async (req, res, next) => {
+  const userId = req.payload.id;
   const cartItems = await userService.getCartItems(userId);
 
   if (cartItems instanceof Error) return next(token);
@@ -38,9 +38,9 @@ router.get('/cart', async (req, res, next) => {
 });
 
 // adds item to cart
-router.post('/cart/:id', async (req, res, next) => {
+router.post('/cart/:id', auth, async (req, res, next) => {
   const body = req.body;
-  const userId = getPayload(req).id;
+  const userId = req.payload.id;
   const updated = await userService.addItemToCart(body, userId);
 
   if (updated instanceof Error) return next(updated);
@@ -49,22 +49,12 @@ router.post('/cart/:id', async (req, res, next) => {
 });
 
 // deletes item from cart
-router.delete('/cart/:id', async (req, res, next) => {
+router.delete('/cart/:id', auth, async (req, res, next) => {
   const itemId = req.params.id;
-  const userId = getPayload(req).id;
+  const userId = req.payload.id;
   const added = await userService.deleteItemFromCart(itemId, userId);
   if (added instanceof Error) return next(added);
   res.send('item was deleted successfully');
 });
-
-/** @param {Object} req takes request to extract payload
- * @returns {Object} returns payload object
- */
-const getPayload = function(req) {
-  const token = req.get('x-auth-token');
-  const payload = jwt.decode(token);
-
-  return payload;
-};
 
 module.exports = router;
