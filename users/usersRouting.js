@@ -49,10 +49,13 @@ router.post('/cart/:id', async (req, res, next) => {
 });
 
 // deletes item from cart
-// router.delete('/cart/:id', async (req, res, next) => {
-//   const itemId = req.params.id;
-//   const added = await userService.deleteItemFromCart(itemId, req);
-// });
+router.delete('/cart/:id', async (req, res, next) => {
+  const itemId = req.params.id;
+  const userId = getPayload(req).id;
+  const added = await userService.deleteItemFromCart(itemId, userId);
+  if (added instanceof Error) return next(added);
+  res.send('item was deleted successfully');
+});
 
 /** @param {Object} req takes request to extract payload
  * @returns {Object} returns payload object

@@ -89,4 +89,15 @@ module.exports = class UserService {
     const cart = await this.User.findOne({ _id: userId });
     return cart;
   }
+
+  async deleteItemFromCart(itemId, userId) {
+    const result = await this.User.update(
+      { _id: userId },
+      { $pull: { carp: { productId: itemId } } }
+    );
+    if (result.nModified !== 1 && result.ok === 1)
+      return createError(404, 'item does not exist');
+    if (result.ok === 0) return createError(500, 'server Error');
+    return result;
+  }
 };
