@@ -17,6 +17,7 @@ describe('User services', () => {
     it('to be called with 2 args and return boolean', async () => {
       const Model = {
         update: jest.fn().mockReturnValue(Promise.resolve({ ok: 1 })),
+        findOneAndUpdate: jest.fn(),
       };
       const userService = new UserService(Model);
       const result = await userService.addItemToCart('body', 'userId');

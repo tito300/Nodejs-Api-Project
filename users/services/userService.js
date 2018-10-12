@@ -70,6 +70,15 @@ module.exports = class UserService {
    * @returns {Boolean} returns true if item is added successfully
    */
   async addItemToCart(body, userId) {
+    const itemInDb = await this.User.findOneAndUpdate(
+      {
+        _id: userId, // eslint-disable-line
+        'cart.productId': body.productId,
+      },
+      { $inc: { 'cart.$.count': 1 } }
+    );
+    if (itemInDb) return true;
+
     const updated = await this.User.update(
       { _id: userId },
       { $push: { cart: body } }
@@ -93,7 +102,7 @@ module.exports = class UserService {
   async deleteItemFromCart(itemId, userId) {
     const result = await this.User.update(
       { _id: userId },
-      { $pull: { carp: { productId: itemId } } }
+      { $pull: { cart: { productId: itemId } } }
     );
     if (result.nModified !== 1 && result.ok === 1)
       return createError(404, 'item does not exist');
